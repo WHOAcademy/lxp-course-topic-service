@@ -1,1 +1,1 @@
-# LXP Course Service
+# LXP Course Topic Service
