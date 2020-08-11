@@ -1,4 +1,3 @@
-app_name: lxp-course-topic-service
 replicas: 1
 # build info not used atm
 build:
@@ -9,17 +8,11 @@ build:
 image_repository: quay.io
 image_name: lxp-course-topic-service
 image_namespace: whoacademy
-image_tag: 1.0.5
+image_tag: 1.0.1
 
 # OCP route
 route: true
 
-# Database
-database:
-  service_port: 5432
-  name: neverendingblog
-  user: bastian
-  password: balthazar
 
 #Django
 #have to get this from vault etc. maybe
@@ -27,15 +20,28 @@ secret_key: x!f$o_*q)a(8etl7trr@htu@=@_ayeb)h6bi(*&vzpiitrvvpz
 environment: dev
 
 postgresql:
-  securityContext:
-    runAsUser: 1000760001
-    fsGroup: 1000760000
-  global:
-    postgresql:
-      #TODO: this should be get from secrets
-      postgresqlDatabase: neverendingblog
-      postgresqlUsername: bastian
-      postgresqlPassword: balthazar
+  enabled: true
+  accessmode: ReadWriteOnce
+  service:
+    port: 5432
+    type: ClusterIP
+  image:
+    tag: "9.6"
+
+  storageClass:
+  accessMode: ReadWriteOnce
+  size: 5Gi
+
+  # To use an external secret for the password for an external PostgreSQL
+  # instance, set enabled to false and provide the name of the secret on the
+  # line below:
+  # existingSecret: ""
+  username: "bastian"
+  password: "balthazar"
+  database: "neverendingblog"
+
+  ## Set annotations on pvc
+  annotations: {}
 
 # Horizontal Pod Autoscaler
 hpa:
