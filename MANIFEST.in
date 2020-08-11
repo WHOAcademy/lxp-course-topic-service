@@ -1,0 +1,4 @@
+recursive-include lxp_course_topic_service/settings *.py
+recursive-include course_topic_app *.*
+include requirements.txt
+include Dockerfile

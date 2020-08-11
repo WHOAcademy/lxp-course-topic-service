@@ -1,0 +1,14 @@
+apiVersion: v2
+name: lxp-course-topic-service
+description: A Helm chart to deploy the lxp course service
+type: application
+# HelmChart Version
+version: 1.0.0
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application.
+appVersion: 1.0.0
+
+dependencies:
+ - name: postgresql
+   version: "8.6.4"
+   repository: https://charts.bitnami.com/bitnami

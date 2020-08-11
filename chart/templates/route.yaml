@@ -1,0 +1,22 @@
+{{- if .Values.route }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "lxp-course-topic-service.fullname" . }}
+  labels:
+    {{- include "lxp-course-topic-service.labels" . | nindent 4 }}
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: {{ include "lxp-course-topic-service.fullname" . }}
+    weight: 100
+  wildcardPolicy: None
+status:
+  ingress:
+    - conditions:
+        - status: 'True'
+          type: Admitted
+{{ end }}

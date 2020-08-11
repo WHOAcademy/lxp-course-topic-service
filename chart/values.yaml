@@ -1,0 +1,49 @@
+app_name: lxp-course-topic-service
+replicas: 1
+# build info not used atm
+build:
+  build_tag: latest
+  base_image: python-38:latest
+  enabled: false
+  source_docker_file_path: Dockerfile
+image_repository: quay.io
+image_name: lxp-course-topic-service
+image_namespace: whoacademy
+image_tag: 1.0.5
+
+# OCP route
+route: true
+
+# Database
+database:
+  service_port: 5432
+  name: neverendingblog
+  user: bastian
+  password: balthazar
+
+#Django
+#have to get this from vault etc. maybe
+secret_key: x!f$o_*q)a(8etl7trr@htu@=@_ayeb)h6bi(*&vzpiitrvvpz
+environment: dev
+
+postgresql:
+  securityContext:
+    runAsUser: 1000760001
+    fsGroup: 1000760000
+  global:
+    postgresql:
+      #TODO: this should be get from secrets
+      postgresqlDatabase: neverendingblog
+      postgresqlUsername: bastian
+      postgresqlPassword: balthazar
+
+# Horizontal Pod Autoscaler
+hpa:
+  enabled: false
+  target:
+    apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+  minReplicas: 1
+  maxReplicas: 2
+  cpuTarget: 1000m
+  memTarget: 500Mi
