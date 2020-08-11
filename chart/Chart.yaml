@@ -1,5 +1,5 @@
 apiVersion: v2
-name: lxp-course-service
+name: lxp-course-topic-service
 description: A Helm chart to deploy the lxp course service
 type: application
 # HelmChart Version
