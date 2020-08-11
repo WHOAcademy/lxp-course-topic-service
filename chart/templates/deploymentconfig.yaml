@@ -36,7 +36,7 @@ spec:
         terminationMessagePolicy: File
         readinessProbe:
           httpGet:
-            path: /api/courses
+            path: /api/course-topics
             port: 8080
           initialDelaySeconds: 10
           timeoutSeconds: 1
