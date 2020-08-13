@@ -91,7 +91,7 @@ pipeline {
           stage("Build (Compile App)") {
             agent {
                 node {
-                    label "jenkins-slave-python"
+                    label "jenkins-slave-python38"
                 }
             }
             steps {
