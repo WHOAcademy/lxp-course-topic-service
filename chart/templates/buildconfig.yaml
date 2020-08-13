@@ -4,24 +4,24 @@ kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
   labels:
-    build: {{ .Values.app_name }}
-    app: {{ .Values.app_name }}
-  name: {{ .Values.app_name }}
+    build: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+  name: {{ .Chart.Name }}
 ---
 kind: BuildConfig
 apiVersion: build.openshift.io/v1
 metadata:
   labels:
-    build: {{ .Values.app_name }}
-    app: {{ .Values.app_name }}
+    build: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
     type: 'image'
-  name: {{ .Values.app_name }}
+  name: {{ .Chart.Name }}
 spec:
   nodeSelector:
   output:
     to:
       kind: ImageStreamTag
-      name: '{{ .Values.app_name }}:{{ .Values.build.build_tag | default "latest"}}'
+      name: '{{ .Chart.Name }}:{{ .Values.build.build_tag | default "latest"}}'
   postCommit: {}
   resources: {}
   runPolicy: Serial

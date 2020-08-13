@@ -1,13 +1,11 @@
 from django.db import models
-from django.conf import settings
 
 
 class CourseTopicModel(models.Model):
-    '''title = models.CharField(max_length=200)
+    name = models.CharField(max_length=45)
     description = models.TextField()
-    duration_seconds = models.IntegerField()
-    creation_date = models.DateTimeField()
-    last_mod_date = models.DateTimeField()'''
+    synonyms = models.CharField(max_length=100)
+    parent = models.ForeignKey(to='self', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return self.name

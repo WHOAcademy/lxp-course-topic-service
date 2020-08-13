@@ -36,7 +36,7 @@ spec:
         terminationMessagePolicy: File
         readinessProbe:
           httpGet:
-            path: /
+            path: /api/course-topics
             port: 8080
           initialDelaySeconds: 10
           timeoutSeconds: 1
@@ -44,15 +44,24 @@ spec:
           - name: APP_ENV
             value: "{{ .Values.environment }}"
           - name: DATABASE_SERVICE_HOST
-            value: db-{{ .Chart.Name }}
+            value: {{ template "postgresql.fullname" . }}
           - name: DATABASE_SERVICE_PORT
-            value: "{{ .Values.database.service_port }}"
+            value: "{{ .Values.postgresql.service.port }}"
           - name: DATABASE_NAME
-            value: "{{ .Values.database.name }}"
+            valueFrom:
+              secretKeyRef:
+                key: {{ default "database" }}
+                name: {{ template "postgresql.name" . }}
           - name: DATABASE_USER
-            value: "{{ .Values.database.user }}"
+            valueFrom:
+              secretKeyRef:
+                key: {{ default "username" }}
+                name: {{ template "postgresql.name" . }}
           - name: DATABASE_PASSWORD
-            value: {{ .Values.database.password }}
+            valueFrom:
+              secretKeyRef:
+                key: {{ default "password" }}
+                name: {{ template "postgresql.name" . }}
           - name: SECRET_KEY
             value: "{{ .Values.secret_key }}"
       dnsPolicy: ClusterFirst

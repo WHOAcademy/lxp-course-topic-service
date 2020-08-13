@@ -195,7 +195,6 @@ pipeline {
                     yq w -i chart/values.yaml 'image_name' ${APP_NAME}
                     yq w -i chart/values.yaml 'image_namespace' ${TARGET_NAMESPACE}
                     yq w -i chart/values.yaml 'image_tag' ${VERSION}
-                    yq w -i chart/values.yaml 'postgresql.fullnameOverride' db-${APP_NAME}
 
                     # latest built image
                     yq w -i chart/values.yaml 'app_tag' ${VERSION}
