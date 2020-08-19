@@ -100,6 +100,8 @@ pipeline {
                     env.VERSIONED_APP_NAME = "${NAME}-${VERSION}"
                     env.PACKAGE = "${VERSIONED_APP_NAME}.tar.gz"
                     env.SECRET_KEY = 'x!f$o_*q)a(8etl7trr@htu@=@_ayeb)h6bi(*&vzpiitrvvpz' //TODO: get it from secret vault
+                    env.TEST_DATABASE_SERVICE_HOST = "test-postgresql.labs-dev"
+                    env.TEST_DATABASE_SERVICE_PORT = "5432"
                 }
                 sh 'printenv'
 
@@ -107,7 +109,8 @@ pipeline {
                 sh 'pip install -r requirements.txt'
 
                 echo '### Running tests ###'
-                sh 'python manage.py test   --with-coverage --cover-erase --cover-package=course_topic_app --with-xunit --xunit-file=xunittest.xml --cover-branches --cover-html'
+                sh 'python manage.py migrate --settings=lxp_course_topic_service.settings.test'
+                sh 'python manage.py test --with-coverage --cover-erase --cover-package=course_topic_app --with-xunit --xunit-file=xunittest.xml --cover-branches --cover-html --settings=lxp_course_topic_service.settings.test'
 
                 echo '### Packaging App for Nexus ###'
                 sh '''
