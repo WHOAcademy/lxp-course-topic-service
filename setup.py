@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='lxp-course-topic-service',
-      version='1.0.3',
+      version='1.0.4',
       packages=find_packages(),
       install_requires=[
           'Django~=3.0.8',
