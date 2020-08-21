@@ -42,4 +42,21 @@ class HealthCheckMiddleware(object):
             logger.exception(e)
             return HttpResponseServerError("db: cannot connect to database.")
 
+        # TODO: Enable once we introduce the cache
+        #
+        # # Call get_stats() to connect to each memcached instance and get it's stats.
+        # # This can effectively check if each is online.
+        # try:
+        #     from django.core.cache import caches
+        #     from django.core.cache import caches
+        #     from django_redis.cache import RedisCache
+        #     for cache in caches.all():
+        #         if isinstance(cache, RedisCache):
+        #             stats = cache._cache.get_stats()
+        #             if len(stats) != len(cache._servers):
+        #                 return HttpResponseServerError("cache: cannot connect to cache.")
+        # except Exception as e:
+        #     logger.exception(e)
+        #     return HttpResponseServerError("cache: cannot connect to cache.")
+
         return HttpResponse("OK")
