@@ -15,6 +15,7 @@ setup(name='lxp-course-topic-service',
           'django-opentracing==1.1.0',
           'jaeger-client==4.3.0',
           'opentracing==2.3.0',
-          'opentracing-instrumentation==3.3.1'
+          'opentracing-instrumentation==3.3.1',
+          'tornado==5.1.1'
       ],
       scripts=['manage.py'])
