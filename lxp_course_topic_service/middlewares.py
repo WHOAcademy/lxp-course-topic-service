@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseServerError
 
 logger = logging.getLogger("healthz")
 
+
 # Liveness and Readiness probes for k8s/OCP
 # https://www.ianlewis.org/en/kubernetes-health-checks-django
 class HealthCheckMiddleware(object):
@@ -13,10 +14,11 @@ class HealthCheckMiddleware(object):
         # One-time configuration and initialization.
 
     def __call__(self, request):
+        health_check_root_path = "/healthcheck"
         if request.method == "GET":
-            if request.path == "/readiness":
+            if request.path == health_check_root_path + "/readiness":
                 return self.readiness(request)
-            elif request.path == "/liveness":
+            elif request.path == health_check_root_path + "/liveness":
                 return self.liveness(request)
         return self.get_response(request)
 
