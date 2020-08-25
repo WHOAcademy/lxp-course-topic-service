@@ -9,10 +9,8 @@ pipeline {
         PROJECT= "labs"
 
         //MVN Vars
-        mvnCmd = "source /usr/local/bin/scl_enable && mvn -s ./nexus_settings.xml"
-
-        //DevTag
-        devTag = "1.2.0"
+        //mvnCmd = "source /usr/local/bin/scl_enable && mvn -s ./nexus_settings.xml"
+        mvnCmd = "mvn clean package"
 
         // Config repo managed by ArgoCD details
         ARGOCD_CONFIG_REPO = "github.com/WHOAcademy/lxp-config.git"
@@ -148,7 +146,7 @@ pipeline {
             steps {
                 script {
                     echo "Running Code Analysis"
-                    sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-labs-ci-cd.apps.who.emea-2.rht-labs.com/ -Dsonar.projectName=${JOB_BASE_NAME} - Dsonar.projectVersion=${devTag}"
+                    sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-labs-ci-cd.apps.who.emea-2.rht-labs.com/ -Dsonar.projectName=${TARGET_NAMESPACE} - Dsonar.projectVersion=${VERSIONED_APP_NAME}"
                     }
                 }
             }
