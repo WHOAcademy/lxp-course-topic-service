@@ -8,6 +8,9 @@ pipeline {
         NAME = "lxp-course-topic-service"
         PROJECT= "labs"
 
+        //MVN Vars
+        mvnCmd = "source /usr/local/bin/scl_enable && mvn -s ./nexus_settings.xml"
+
         // Config repo managed by ArgoCD details
         ARGOCD_CONFIG_REPO = "github.com/WHOAcademy/lxp-config.git"
         ARGOCD_CONFIG_REPO_PATH = "lxp-deployment/values-test.yaml"
@@ -137,6 +140,15 @@ pipeline {
                 }
             }
         }
+
+        stage('Code Analysis') {
+            steps {
+                script {
+                    echo "Running Code Analysis"
+                    sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-labs-ci-cd.apps.who.emea-2.rht-labs.com/ -Dsonar.projectName=${JOB_BASE_NAME} - Dsonar.projectVersion=${devTag}"
+                    }
+                }
+            }
 
       stage("Bake (OpenShift Build)") {
             options {
