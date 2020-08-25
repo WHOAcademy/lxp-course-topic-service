@@ -155,8 +155,9 @@ pipeline {
             steps {
                 sh 'printenv'
                 echo 'Running Code Analysis'
-
-                sh  '''/sonarqube-scanner/bin/sonar-scanner --version'''
+                withSonarQubeEnv('Sonarqube') {
+                    sh  '''/sonarqube-scanner/bin/sonar-scanner --version'''
+                }
             }
       }
 
