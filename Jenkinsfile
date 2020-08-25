@@ -144,9 +144,6 @@ pipeline {
 
 
         stage("Code Analysis") {
-            options {
-                skipDefaultCheckout(true)
-            }
             agent {
                 node {
                     label "jenkins-slave-sonarqube"
