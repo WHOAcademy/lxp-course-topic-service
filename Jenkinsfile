@@ -11,6 +11,9 @@ pipeline {
         //MVN Vars
         mvnCmd = "source /usr/local/bin/scl_enable && mvn -s ./nexus_settings.xml"
 
+        //DevTag
+        devTag = "1.2.0"
+
         // Config repo managed by ArgoCD details
         ARGOCD_CONFIG_REPO = "github.com/WHOAcademy/lxp-config.git"
         ARGOCD_CONFIG_REPO_PATH = "lxp-deployment/values-test.yaml"
