@@ -9,8 +9,8 @@ pipeline {
         PROJECT= "labs"
 
         //MVN Vars
-        //mvnCmd = "source /usr/local/bin/scl_enable && mvn -s ./nexus_settings.xml"
-        mvnCmd = "mvn clean package"
+        mvnCmd = "source /usr/local/bin/scl_enable && mvn -s ./nexus_settings.xml"
+        //mvnCmd = "clean package"
 
         // Config repo managed by ArgoCD details
         ARGOCD_CONFIG_REPO = "github.com/WHOAcademy/lxp-config.git"
@@ -142,14 +142,23 @@ pipeline {
             }
         }
 
-        stage('Code Analysis') {
-            steps {
-                script {
-                    echo "Running Code Analysis"
-                    sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-labs-ci-cd.apps.who.emea-2.rht-labs.com/ -Dsonar.projectName=${TARGET_NAMESPACE} - Dsonar.projectVersion=${VERSIONED_APP_NAME}"
-                    }
+
+        stage("Code Analysis") {
+            options {
+                skipDefaultCheckout(true)
+            }
+            agent {
+                node {
+                    label "jenkins-slave-sonarqube"
                 }
             }
+            steps {
+                sh 'printenv'
+                echo 'Running Code Analysis'
+
+                sh  '''/sonarqube-scanner/bin/sonar-scanner --version'''
+            }
+      }
 
       stage("Bake (OpenShift Build)") {
             options {
