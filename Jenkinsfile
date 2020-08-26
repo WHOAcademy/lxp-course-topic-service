@@ -109,6 +109,7 @@ pipeline {
                 sh 'pip install -r requirements.txt'
 
                 echo '### Running tests ###'
+                sh 'pip freeze'
                 sh 'python manage.py migrate --settings=lxp_course_topic_service.settings.test'
                 sh 'python manage.py test --with-coverage --cover-erase --cover-package=course_topic_app --with-xunit --xunit-file=xunittest.xml --cover-branches --cover-html --settings=lxp_course_topic_service.settings.test'
 
