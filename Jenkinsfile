@@ -8,6 +8,10 @@ pipeline {
         NAME = "lxp-course-topic-service"
         PROJECT= "labs"
 
+        //MVN Vars
+        mvnCmd = "source /usr/local/bin/scl_enable && mvn -s ./nexus_settings.xml"
+        //mvnCmd = "clean package"
+
         // Config repo managed by ArgoCD details
         ARGOCD_CONFIG_REPO = "github.com/WHOAcademy/lxp-config.git"
         ARGOCD_CONFIG_REPO_PATH = "lxp-deployment/values-test.yaml"
@@ -137,6 +141,23 @@ pipeline {
                 }
             }
         }
+
+        stage("Code Analysis") {
+            agent {
+                node {
+                    label "jenkins-slave-sonarqube"
+                }
+            }
+            steps {
+                sh 'printenv'
+                echo 'Running Code Analysis'
+                withSonarQubeEnv('Sonarqube') {
+                    sh  '''
+                    /sonarqube-scanner/bin/sonar-scanner -Dsonar.projectKey=${APP_NAME} -Dsonar.language=py -Dsonar.sources=. -Dsonar.exclusions=*.xml -Dsonar.python.xunit.reportPath=xunittest.xml
+                    '''
+                }
+            }
+      }
 
       stage("Bake (OpenShift Build)") {
             options {
